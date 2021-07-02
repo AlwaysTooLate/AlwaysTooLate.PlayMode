@@ -1,0 +1,11 @@
+{
+  "name": "com.alwaystoolate.playmode",
+  "displayName": "AlwaysTooLate PlayMode",
+  "description": "AlwaysTooLate PlayMode module",
+  "unity": "2018.3",
+  "version": "1.0.0",
+  "dependencies": {
+    "com.alwaystoolate.core": "1.0.0"
+  },
+  "type": "library"
+}
