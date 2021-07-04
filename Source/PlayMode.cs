@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Assertions;
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using UnityEngine;
 
 namespace AlwaysTooLate.PlayMode
 {
@@ -15,7 +16,7 @@ namespace AlwaysTooLate.PlayMode
         
         private const string OverwritePlayModeSetting = "ATLPlayMode.EnablePlayModeOverwrite";
 
-        private static bool _playmodeEnter = false;
+        private static bool _isEnteringPlaymode = false;
         
         static PlayMode()
         {
@@ -33,31 +34,38 @@ namespace AlwaysTooLate.PlayMode
             }
         }
         
+        /// <summary>
+        ///     Enter playmode menu item.
+        /// </summary>
         [MenuItem(PlayModeMenu, false, 10)]
         public static void EnterPlayMode()
         {
-            _playmodeEnter = true;
+            _isEnteringPlaymode = true;
             
-            // Setup the game scene
-            SetupGameScene();
+            // Setup the default scene
+            SetupDefaultScene();
             
             // Force-enter the playmode.
             EditorApplication.EnterPlaymode();
         }
 
+
+        /// <summary>
+        ///     Owerwrite playmode menu item with toggle.
+        /// </summary>
         [MenuItem(OverwritePlayMode, false, 11)]
         public static void ToggleOverwriteDefaultPlayMode()
         {
-            var enabled = EditorPrefs.GetBool(OverwritePlayModeSetting);
+            var isDefaultPlaymodeEnabled = EditorPrefs.GetBool(OverwritePlayModeSetting);
 
             // Toggle the state
-            enabled = !enabled;
+            isDefaultPlaymodeEnabled = !isDefaultPlaymodeEnabled;
             
             // Set pref and menu item check
-            EditorPrefs.SetBool(OverwritePlayModeSetting, enabled);
-            Menu.SetChecked(OverwritePlayMode, enabled);
+            EditorPrefs.SetBool(OverwritePlayModeSetting, isDefaultPlaymodeEnabled);
+            Menu.SetChecked(OverwritePlayMode, isDefaultPlaymodeEnabled);
 
-            if (enabled)
+            if (isDefaultPlaymodeEnabled)
             {
                 // Overwrite the default scene
                 SetupDefaultScene();
@@ -78,9 +86,9 @@ namespace AlwaysTooLate.PlayMode
             {
                 // Restore the default scene (if this playmode has not been triggered using shortcut)
                 
-                if (_playmodeEnter)
+                if (_isEnteringPlaymode)
                 {
-                    _playmodeEnter = false;
+                    _isEnteringPlaymode = false;
                     return;
                 }
                 
@@ -95,44 +103,37 @@ namespace AlwaysTooLate.PlayMode
             
             // Make sure that we always set the default playmode scene on scene open while playmode overwrite is enabled.
             var sceneAsset = GetSceneByIndex(scene.buildIndex);
-            SetCurrentScene(sceneAsset);
+            SetPlaymodeScene(sceneAsset);
         }
 
         private static void SetupDefaultScene()
         {
-            if (EditorBuildSettings.scenes.Length == 0) return;
+            if (EditorBuildSettings.scenes.Length == 0)
+            {
+                Debug.LogWarning("Missing scenes in BuildSettings! Cannot enter main-scene playmode.");
+                return;
+            }
             
             var sceneAsset = GetSceneByIndex(0);
-            SetCurrentScene(sceneAsset);
-        }
-
-        private static void SetupGameScene()
-        {
-            Assert.IsTrue(EditorBuildSettings.scenes.Length > 0,
-                "You have no specified scenes in BuildSettings! Cannot enter playmode.");
-            
-            var sceneAsset = GetSceneByIndex(0);
-            SetCurrentScene(sceneAsset);
+            SetPlaymodeScene(sceneAsset);
         }
 
         private static void RestoreOpenScene()
         {
             // Restore playmode to the currently open scene
             var sceneAsset = GetSceneByIndex(SceneManager.GetActiveScene().buildIndex);
-            SetCurrentScene(sceneAsset);
+            SetPlaymodeScene(sceneAsset);
         }
 
-        private static void SetCurrentScene(SceneAsset sceneAsset)
+        private static void SetPlaymodeScene(SceneAsset sceneAsset)
         {
             EditorSceneManager.playModeStartScene = sceneAsset;
         }
 
         private static SceneAsset GetSceneByIndex(int index)
         {
-            var pathOfFirstScene = EditorBuildSettings.scenes[index].path;
-            var sceneAsset = AssetDatabase.LoadAssetAtPath<SceneAsset>(pathOfFirstScene);
-
-            return sceneAsset;
+            var scenePath = EditorBuildSettings.scenes[index].path;
+            return AssetDatabase.LoadAssetAtPath<SceneAsset>(scenePath);
         }
     }
 }
