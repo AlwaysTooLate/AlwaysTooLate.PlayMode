@@ -11,8 +11,8 @@ namespace AlwaysTooLate.PlayMode
     [InitializeOnLoadAttribute]
     internal static class PlayMode
     {
-        private const string PlayModeMenu = "Always Too Late/PlayMode/Enter PlayMode %q";
-        private const string OverwritePlayMode = "Always Too Late/PlayMode/Overwrite default playmode";
+        private const string PlayModeMenu = "Tools/Always Too Late/PlayMode/Enter PlayMode %q";
+        private const string OverwritePlayMode = "Tools/Always Too Late/PlayMode/Overwrite default playmode";
         
         private const string OverwritePlayModeSetting = "ATLPlayMode.EnablePlayModeOverwrite";
 

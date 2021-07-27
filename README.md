@@ -10,7 +10,7 @@ https://github.com/AlwaysTooLate/AlwaysTooLate.PlayMode.git
 # How to use
 
 After installation, just press **CTRL + Q** and the Unity Editor will automatically enter the playmode using your main scene (with build index = 0) from the `Build Settings`.
-You can additionally overwrite the default Play button functionality by toggling `Always Too Late/PlayMode/Overwrite default playmode`, so it also can run the main scene.
+You can additionally overwrite the default Play button functionality by toggling `Tools/Always Too Late/PlayMode/Overwrite default playmode`, so it also can run the main scene.
 
 # Contribution
 
