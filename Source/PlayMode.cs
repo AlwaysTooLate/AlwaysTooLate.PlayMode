@@ -1,4 +1,4 @@
-// AlwaysTooLate.PlayMode (c) 2018-2020 Always Too Late.
+// AlwaysTooLate.PlayMode (c) 2018-2022 Always Too Late.
 
 using UnityEngine.SceneManagement;
 using UnityEngine.Assertions;
