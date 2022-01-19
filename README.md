@@ -16,4 +16,4 @@ You can additionally overwrite the default Play button functionality by toggling
 
 We do accept PR. Feel free to contribute. If you want to find us, look for the ATL staff on the official [AlwaysTooLate Discord Server](https://discord.alwaystoolate.com/)
 
-*AlwaysTooLate.PlayMode (c) 2018-2021 Always Too Late.*
+*AlwaysTooLate.PlayMode (c) 2018-2022 Always Too Late.*
